@@ -1,0 +1,27 @@
+{
+    "applicationName": "Let's Event",
+    "routes": {
+        "data": [
+            {
+                "key": "home",
+                "path": "/",
+                "name": "Home"
+            },
+            {
+                "key": "login",
+                "path": "/login",
+                "name": "Login"
+            },
+            {
+                "key": "register",
+                "path": "/register",
+                "name": "Register"
+            },
+            {
+                "key": "about",
+                "path": "/about",
+                "name": "About"
+            }
+        ]
+    }
+}
