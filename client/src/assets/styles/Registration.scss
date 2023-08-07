@@ -1,0 +1,39 @@
+.registration-form, .login-form, .login-show {
+    width: 80vw;
+    max-width: 30rem;
+    margin: 2rem auto;
+    // margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    .login-message {
+        align-self: center;
+        margin: 0;
+    }
+
+    .name-wrapper {
+        display: flex;
+        gap: 0.8rem;
+
+        .inputField {
+            width: 100%;
+        }
+    }
+
+    .few-more-details, .passwords, .submit-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .submit-btn {
+        align-self: center;
+        width: 10rem;
+        margin-top: 1.5rem;
+    }
+}
+
+.login-show {
+    margin-top: 5rem;
+}

@@ -31,6 +31,7 @@
             "errorText": "Passwords doesn't match"
         }
     },
+    "loginForm": {},
     "variants": {
         "outlined": "outlined"
     },
@@ -39,5 +40,9 @@
         "email": "email",
         "password": "password",
         "mobile": "tel"
+    },
+    "buttons": {
+        "register": "register",
+        "login": "login"
     }
 }

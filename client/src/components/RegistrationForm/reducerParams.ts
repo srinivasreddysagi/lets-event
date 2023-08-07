@@ -44,16 +44,7 @@ export const formReducer = (state, action) => {
                 }
             });
         case "VALIDATE":
-            return state.map((field) => {
-                if (field.value.trim() === "") {
-                    return {
-                        ...field,
-                        error: formFields.registrationForm[field.id].errorText,
-                    };
-                } else {
-                    return field;
-                }
-            });
+            return action.payload;
         case "CLEAR":
             return state.map((field) => {
                 return {
