@@ -1,0 +1,43 @@
+{
+    "registrationForm": {
+        "firstName": {
+            "id": "firstName",
+            "label": "First Name",
+            "errorText": "First Name is required"
+        },
+        "lastName": {
+            "id": "lastName",
+            "label": "Last Name"
+        },
+        "email": {
+            "id": "email",
+            "label": "Email",
+            "errorText": "Email is required"
+        },
+        "mobile": {
+            "id": "mobile",
+            "label": "Mobile",
+            "placeholder": "+91XXXXXXXXXX",
+            "errorText": "Mobile Number is required"
+        },
+        "password": {
+            "id": "password",
+            "label": "Password",
+            "errorText": "Password is required"
+        },
+        "confirmPassword": {
+            "id": "confirmPassword",
+            "label": "Confirm Password",
+            "errorText": "Passwords doesn't match"
+        }
+    },
+    "variants": {
+        "outlined": "outlined"
+    },
+    "textFieldTypes": {
+        "text": "text",
+        "email": "email",
+        "password": "password",
+        "mobile": "tel"
+    }
+}
