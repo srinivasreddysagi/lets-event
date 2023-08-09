@@ -1,7 +1,8 @@
 {
-    "root": "http://localhost:3001",
+    "root": "http://localhost:3001/",
     "endpoints": {
-        "register": "userregistration",
+        "rootVersion": "api/v1.0.0/",
+        "register": "register",
         "login": "login"
     }
 }

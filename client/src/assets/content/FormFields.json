@@ -31,7 +31,12 @@
             "errorText": "Passwords doesn't match"
         }
     },
-    "loginForm": {},
+    "loginForm": {
+        "errors": {
+            "email": "Please enter your registered email",
+            "password": "Password is invalid"
+        }
+    },
     "variants": {
         "outlined": "outlined"
     },

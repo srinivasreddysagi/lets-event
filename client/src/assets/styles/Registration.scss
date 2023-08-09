@@ -1,13 +1,16 @@
-.registration-form, .login-form, .login-show {
+.registration-form,
+.login-form,
+.login-show,
+.register-show {
     width: 80vw;
     max-width: 30rem;
     margin: 2rem auto;
-    // margin-top: 5rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
 
-    .login-message {
+    .login-message,
+    .register-message {
         align-self: center;
         margin: 0;
     }
@@ -21,10 +24,23 @@
         }
     }
 
-    .few-more-details, .passwords, .submit-btn {
+    .few-more-details,
+    .passwords,
+    .submit-btn {
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
+    }
+
+    .input {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .inputField {
+            width: 100%;
+            max-width: 25rem;
+        }
     }
 
     .submit-btn {
@@ -34,6 +50,7 @@
     }
 }
 
-.login-show {
+.login-show,
+.register-show {
     margin-top: 5rem;
 }

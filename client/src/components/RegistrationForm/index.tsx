@@ -2,9 +2,11 @@ import React, { FC, useState, useReducer } from "react";
 import Link from "next/link";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
+import endpoint from '../../assets/content/Endpoints.json';
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { initialFormState, formReducer } from "./reducerParams";
 import md5 from "blueimp-md5";
+import { postRequest } from "../../services/ApiCalls";
 
 export const RegistrationForm: FC = () => {
     const [formState, dispatch] = useReducer(formReducer, initialFormState);
@@ -53,13 +55,25 @@ export const RegistrationForm: FC = () => {
         event.preventDefault();
         const isValid = validateRegisterForm();
         if (isValid) {
-            console.log({
+            const payload = {
                 firstName: formState[0].value,
                 lastName: formState[1].value,
                 email: formState[2].value,
                 mobile: formState[3].value,
                 password: md5(formState[4].value),
-            });
+            };
+            // console.log(payload);
+            try {
+                const response = postRequest(
+                    endpoint.root +
+                        endpoint.endpoints.rootVersion +
+                        endpoint.endpoints.register,
+                    payload
+                );
+                console.log(response);
+            } catch(error) {
+                console.log(error);
+            }
             dispatch({
                 type: "CLEAR",
             });

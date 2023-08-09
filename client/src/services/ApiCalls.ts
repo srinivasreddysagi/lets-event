@@ -1,0 +1,19 @@
+import axios from "axios";
+
+// const config = {
+//     headers: {
+//         "Access-Control-Allow-Origin": "*",
+//         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+//     },
+// };
+
+export const getRequest = async (url) => {
+    const response = await axios.get(url);
+    return response.data;
+};
+
+export const postRequest = async (url, body) => {
+    const response = await axios.post(url, body);
+    console.log(response);
+    return response;
+};
