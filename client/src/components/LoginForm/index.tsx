@@ -21,7 +21,6 @@ export const LoginForm: FC = () => {
             ...loginCreds,
             [event.target.id]: { value: event.target.value, err: "" },
         });
-        console.log(event.target.id);
     };
 
     const submitHandler = (event) => {
