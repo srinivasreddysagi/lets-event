@@ -1,9 +1,6 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 export const useForm = (initialFormState, validations) => {
-    // const [isError, setIsError] = useState(false);
-    let isError = true;
-
     const formReducer = (state, action) => {
         switch (action.type) {
             case "CHANGE":
@@ -15,38 +12,10 @@ export const useForm = (initialFormState, validations) => {
                     }
                 });
             case "VALIDATE":
-                return state.map((field) => {
-                    if (
-                        validations[field.name].required &&
-                        field.value.trim() === ""
-                    ) {
-                        console.log("Executed empty 5 times");
-                        isError = true; // setIsError(true);
-                        return {
-                            ...field,
-                            error: `${field.label} is required`,
-                        };
-                    } else if (validations[field.name].patterns?.length > 0) {
-                        validations[field.name].patterns.forEach(
-                            (validation) => {
-                                if (
-                                    !validation.pattern.test(field.value) &&
-                                    !field.error
-                                ) {
-                                    isError = true; setIsError(true);
-                                    field.error = validation.message;
-                                }
-                            }
-                        );
-                        return field;
-                    } else {
-                        return field;
-                    }
-                });
+                    return action.payload;
             case "PLACE_ERR":
                 return state.map((field) => {
                     if (field.name === action.payload.name) {
-                        isError = true; // setIsError(true);
                         return { ...field, error: action.payload.error };
                     } else {
                         return field;
@@ -75,15 +44,29 @@ export const useForm = (initialFormState, validations) => {
         });
     };
 
-    const validate = async () => {
-        await (() => dispatch({ type: "VALIDATE" }))();
-        console.log("isError => ", isError);
-        if (isError) {
-            isError = false; // setIsError(false);
-        } else {
-            return true;
-        }
-        return false;
+    const validate = () => {
+        let isValid = true;
+        const payload = formState.map((field) => {
+            if (validations[field.name].required && field.value.trim() === "") {
+                isValid = false;
+                return {
+                    ...field,
+                    error: `${field.label} is required`,
+                };
+            } else if (validations[field.name].patterns?.length > 0) {
+                validations[field.name].patterns.forEach((validation) => {
+                    if (!validation.pattern.test(field.value) && !field.error) {
+                        isValid = false;
+                        field.error = validation.message;
+                    }
+                });
+                return field;
+            } else {
+                return field;
+            }
+        });
+        dispatch({ type: "VALIDATE", payload });
+        return isValid;
     };
 
     const setError = (name, error) =>

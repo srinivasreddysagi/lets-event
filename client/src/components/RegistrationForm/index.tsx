@@ -1,4 +1,4 @@
-import React, { FC, useState, useReducer } from "react";
+import React, { FC, useState } from "react";
 import Link from "next/link";
 import { useForm } from "../../hooks/useForm";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
@@ -27,38 +27,36 @@ export const RegistrationForm: FC = () => {
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        let isValid = await validate();
-        if (formState[4].value !== formState[5].value) {
-            console.log("pwords didn't match!!");
-            isValid = false;
-            setError(
-                formFields.registrationForm.confirmPassword.id,
-                formFields.registrationForm.confirmPassword.errorText
-            );
-        }
-        console.log("isValid", isValid);
-        if (isValid) {
-            const payload = {
-                firstName: formState[0].value,
-                lastName: formState[1].value,
-                email: formState[2].value,
-                mobile: formState[3].value,
-                password: md5(formState[4].value),
-            };
-            try {
-                console.log(payload);
-                // const response = postRequest(
-                //     endpoint.root +
-                //         endpoint.endpoints.rootVersion +
-                //         endpoint.endpoints.register,
-                //     payload
-                // );
-                // console.log(response);
-            } catch (error) {
-                console.log(error);
+        const isValid = await validate();
+            if (formState[4].value === formState[5].value && isValid) {
+                const payload = {
+                    firstName: formState[0].value,
+                    lastName: formState[1].value,
+                    email: formState[2].value,
+                    mobile: formState[3].value,
+                    password: md5(formState[4].value),
+                };
+                try {
+                    console.log(payload);
+                    const response = postRequest(
+                        endpoint.root +
+                            endpoint.endpoints.rootVersion +
+                            endpoint.endpoints.register,
+                        payload
+                    );
+                } catch (error) {
+                    console.log(error);
+                }
+                clearForm();
+            } else if (
+                formState[4].value &&
+                formState[5].value && formState[4].value !== formState[5].value
+            ) {
+                setError(
+                    formFields.registrationForm.confirmPassword.id,
+                    formFields.registrationForm.confirmPassword.errorText
+                );
             }
-            clearForm();
-        }
     };
 
     return (
