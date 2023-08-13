@@ -1,0 +1,20 @@
+{
+    "alertVariants": {
+        "success": "success",
+        "info": "info",
+        "warning": "warning",
+        "error": "error"
+    },
+    "common": {
+        "error": "Something went wrong!"
+    },
+    "registration": {
+        "done": "User registered successfully",
+        "exist": "Email is already registered"
+    },
+    "login": {
+        "done": "User authorized successfully",
+        "notRegistered": "User is not registered",
+        "wrongPcode": "Unauthorized - Invalid password"
+    }
+}
