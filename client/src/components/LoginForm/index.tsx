@@ -1,62 +1,92 @@
 import React, { FC, useState } from "react";
+import { initialLoginFormState, loginValidations } from "./loginValidations";
+import { useForm } from "../../hooks/useForm";
+import { useRequest } from "../../hooks/useRequest";
+import SnackBar from "../common/SnackBar/SnackBar";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
+import endpoint from "../../assets/content/Endpoints.json";
+import messages from "../../assets/content/AlertMessages.json";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import md5 from "blueimp-md5";
 import Link from "next/link";
 
 export const LoginForm: FC = () => {
+    const { formState, handleChange, validate, setError, clearForm } = useForm(
+        initialLoginFormState,
+        loginValidations
+    );
 
-    const [loginCreds, setLoginCreds] = useState({
-        email: { value: "", err: "" },
-        password: { value: "", err: "" },
+    const { isLoading, isError, postData } = useRequest();
+
+    const [snack, setSnack] = useState({
+        snack: false,
+        message: "",
+        variant: "success",
     });
 
-    const [togglePasswordVisibility, setTogglePasswordVisibility] = useState(true);
+    const [togglePasswordVisibility, setTogglePasswordVisibility] =
+        useState(true);
 
-    const showHidePassword = () => setTogglePasswordVisibility(!togglePasswordVisibility);
+    const showHidePassword = () =>
+        setTogglePasswordVisibility(!togglePasswordVisibility);
 
-    const handleChange = (event) => {
-        setLoginCreds({
-            ...loginCreds,
-            [event.target.id]: { value: event.target.value, err: "" },
-        });
-    };
-
-    const submitHandler = (event) => {
+    const submitHandler = async (event) => {
         event.preventDefault();
-        if (loginCreds.email.value.trim() && loginCreds.password.value) {
-            console.log({
-                email: loginCreds.email.value,
-                password: md5(loginCreds.password.value),
-            });
-            setLoginCreds({
-                email: { value: "", err: "" },
-                password: { value: "", err: "" },
-            });
-        } else {
-            if (!loginCreds.email.value.trim()) {
-                setLoginCreds({
-                    ...loginCreds,
-                    email: {
-                        ...loginCreds.email,
-                        err: formFields.registrationForm.email.errorText,
-                    },
-                });
-            }
-            if (!loginCreds.password.value) {
-                setLoginCreds((loginCreds) => {
-                    return {
-                        ...loginCreds,
-                        password: {
-                            ...loginCreds.password,
-                            err: formFields.registrationForm.password.errorText,
-                        },
-                    };
+        const isValid = validate();
+        if (isValid) {
+            const payload = {
+                email: formState[0].value,
+                password: md5(formState[1].value),
+            };
+            const response = await postData(
+                endpoint.root +
+                    endpoint.endpoints.rootVersion +
+                    endpoint.endpoints.login,
+                payload
+            );
+            if (response.status === 200) {
+                if (response.data.message === messages.login.notRegistered) {
+                    setError(
+                        formFields.textFieldTypes.email,
+                        formFields.loginForm.errors.email
+                    );
+                    setSnack({
+                        snack: true,
+                        variant: response.data.type,
+                        message: response.data.message,
+                    });
+                } else if (response.data.message === messages.login.wrongPcode) {
+                    setError(
+                        formFields.textFieldTypes.password,
+                        formFields.loginForm.errors.password
+                    );
+                    setSnack({
+                        snack: true,
+                        variant: response.data.type,
+                        message: response.data.message,
+                    });
+                } else {
+                    clearForm();
+                    setSnack({
+                        snack: true,
+                        variant: response.data.type,
+                        message: response.data.message,
+                    });
+                }
+            } else {
+                setSnack({
+                    snack: true,
+                    variant: messages.alertVariants.error,
+                    message: messages.common.error,
                 });
             }
         }
     };
+
+    if (isLoading) return <>{"Loading..."}</>;
+
+    if (isError.status) return <>{isError.message}</>;
 
     return (
         <>
@@ -72,27 +102,27 @@ export const LoginForm: FC = () => {
                     <TextField
                         className="inputField"
                         type={formFields.textFieldTypes.email}
-                        id={formFields.textFieldTypes.email}
+                        name={formFields.textFieldTypes.email}
                         label={formFields.registrationForm.email.label}
-                        error={!!loginCreds.email.err}
-                        helperText={loginCreds.email.err}
-                        value={loginCreds.email.value}
+                        error={!!formState[0].error}
+                        helperText={formState[0].error}
+                        value={formState[0].value}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="input password-field">
                     <TextField
                         className="inputField"
-                        id={formFields.textFieldTypes.password}
+                        name={formFields.textFieldTypes.password}
                         label={formFields.registrationForm.password.label}
                         type={
                             togglePasswordVisibility
                                 ? formFields.textFieldTypes.password
                                 : formFields.textFieldTypes.text
                         }
-                        error={!!loginCreds.password.err}
-                        helperText={loginCreds.password.err}
-                        value={loginCreds.password.value}
+                        error={!!formState[1].error}
+                        helperText={formState[1].error}
+                        value={formState[1].value}
                         onChange={handleChange}
                         InputProps={{
                             endAdornment: (
@@ -126,6 +156,12 @@ export const LoginForm: FC = () => {
                     <Link href="/register">{"Reset Password"}</Link>{" "}
                 </p>
             </div>
+            <SnackBar
+                snack={snack.snack}
+                setSnack={setSnack}
+                variant={snack.variant}
+                message={snack.message}
+            />
         </>
     );
 };

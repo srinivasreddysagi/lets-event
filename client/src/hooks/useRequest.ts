@@ -13,6 +13,7 @@ export const useRequest = () => {
         } catch (error) {
             setIsError(error);
             setIsLoading(false);
+            return { status: 500 };
         } finally {
             setIsLoading(false);
         }
