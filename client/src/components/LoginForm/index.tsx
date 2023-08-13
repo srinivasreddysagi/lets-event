@@ -74,8 +74,7 @@ export const LoginForm: FC = () => {
                         type={formFields.textFieldTypes.email}
                         id={formFields.textFieldTypes.email}
                         label={formFields.registrationForm.email.label}
-                        variant={formFields.variants.outlined}
-                        error={loginCreds.email.err}
+                        error={!!loginCreds.email.err}
                         helperText={loginCreds.email.err}
                         value={loginCreds.email.value}
                         onChange={handleChange}
@@ -91,8 +90,7 @@ export const LoginForm: FC = () => {
                                 ? formFields.textFieldTypes.password
                                 : formFields.textFieldTypes.text
                         }
-                        variant={formFields.variants.outlined}
-                        error={loginCreds.password.err}
+                        error={!!loginCreds.password.err}
                         helperText={loginCreds.password.err}
                         value={loginCreds.password.value}
                         onChange={handleChange}
