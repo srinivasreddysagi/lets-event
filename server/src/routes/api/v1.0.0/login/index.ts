@@ -1,25 +1,28 @@
 import express from "express";
 import Register from "../../../../models/Register";
+import messages from "../../../../assets/content/AlertMessages.json";
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
     try {
         const loginUser = await Register.where({ email: req.body.email });
-        if (loginUser.length > 0)  {
+        if (loginUser.length > 0) {
             if (loginUser[0].password === req.body.password) {
                 res.json({
-                    status: 200,
-                    message: "Authorized",
+                    message: messages.login.done,
                 });
             } else {
                 res.json({
-                    status: 401,
-                    message: "Unauthorized - Invalid password",
+                    message: messages.login.wrongPcode,
+                    type: messages.alertVariants.error
                 });
             }
         } else {
-            res.json({ status: 401, message: "User is not registered" });
+            res.json({
+                message: messages.login.notRegistered,
+                type: messages.alertVariants.warning,
+            });
         }
     } catch (err) {
         res.json({ message: err });
