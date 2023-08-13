@@ -4,19 +4,27 @@ import { useForm } from "../../hooks/useForm";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
 import endpoint from "../../assets/content/Endpoints.json";
+import messages from "../../assets/content/AlertMessages.json";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { initialFormState, validations } from "./registerFormData";
 import md5 from "blueimp-md5";
-import { postRequest } from "../../services/ApiCalls";
+import { useRequest } from "../../hooks/useRequest";
+import SnackBar from "../common/SnackBar/SnackBar";
 
 export const RegistrationForm: FC = () => {
     const { formState, handleChange, validate, setError, clearForm } = useForm(
         initialFormState,
         validations
     );
+    const { isLoading, isError, postData } = useRequest();
     const [togglePasswordVisibility, setTogglePasswordVisibility] = useState({
         password: true,
         confirmPassword: true,
+    });
+    const [snack, setSnack] = useState({
+        snack: false,
+        message: "",
+        variant: "success",
     });
 
     const showHidePassword = (fieldId) =>
@@ -28,36 +36,49 @@ export const RegistrationForm: FC = () => {
     const submitHandler = async (event) => {
         event.preventDefault();
         const isValid = await validate();
-            if (formState[4].value === formState[5].value && isValid) {
-                const payload = {
-                    firstName: formState[0].value,
-                    lastName: formState[1].value,
-                    email: formState[2].value,
-                    mobile: formState[3].value,
-                    password: md5(formState[4].value),
-                };
-                try {
-                    console.log(payload);
-                    const response = postRequest(
-                        endpoint.root +
-                            endpoint.endpoints.rootVersion +
-                            endpoint.endpoints.register,
-                        payload
-                    );
-                } catch (error) {
-                    console.log(error);
-                }
+        if (formState[4].value === formState[5].value && isValid) {
+            const payload = {
+                firstName: formState[0].value,
+                lastName: formState[1].value,
+                email: formState[2].value,
+                mobile: formState[3].value,
+                password: md5(formState[4].value),
+            };
+            const response = await postData(
+                endpoint.root +
+                    endpoint.endpoints.rootVersion +
+                    endpoint.endpoints.register,
+                payload
+            );
+            if (response.status === 200) {
                 clearForm();
-            } else if (
-                formState[4].value &&
-                formState[5].value && formState[4].value !== formState[5].value
-            ) {
-                setError(
-                    formFields.registrationForm.confirmPassword.id,
-                    formFields.registrationForm.confirmPassword.errorText
-                );
+                setSnack({
+                    snack: true,
+                    variant: response.data.type,
+                    message: response.data.message,
+                });
+            } else {
+                setSnack({
+                    snack: true,
+                    variant: messages.alertVariants.error,
+                    message: messages.common.error,
+                });
             }
+        } else if (
+            formState[4].value &&
+            formState[5].value &&
+            formState[4].value !== formState[5].value
+        ) {
+            setError(
+                formFields.registrationForm.confirmPassword.id,
+                formFields.registrationForm.confirmPassword.errorText
+            );
+        }
     };
+
+    if (isLoading) return <>{"Loading..."}</>;
+
+    if (isError.status) return <>{isError.message}</>;
 
     return (
         <>
@@ -79,7 +100,6 @@ export const RegistrationForm: FC = () => {
                             type={formFields.textFieldTypes.text}
                             name={each}
                             label={formFields.registrationForm[each].label}
-                            variant={formFields.variants.outlined}
                             error={!!formState[idx].error}
                             helperText={formState[idx].error}
                             value={formState[idx].value}
@@ -101,7 +121,6 @@ export const RegistrationForm: FC = () => {
                             placeholder={
                                 formFields.registrationForm[each].placeholder
                             }
-                            variant={formFields.variants.outlined}
                             error={!!formState[idx + 2].error}
                             helperText={formState[idx + 2].error}
                             value={formState[idx + 2].value}
@@ -124,7 +143,6 @@ export const RegistrationForm: FC = () => {
                                     ? formFields.textFieldTypes.password
                                     : formFields.textFieldTypes.text
                             }
-                            variant={formFields.variants.outlined}
                             error={!!formState[idx + 4].error}
                             helperText={formState[idx + 4].error}
                             value={formState[idx + 4].value}
@@ -167,6 +185,12 @@ export const RegistrationForm: FC = () => {
                     </Button>
                 </div>
             </form>
+            <SnackBar
+                snack={snack.snack}
+                setSnack={setSnack}
+                variant={snack.variant}
+                message={snack.message}
+            />
         </>
     );
 };
