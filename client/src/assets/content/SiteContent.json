@@ -1,0 +1,12 @@
+{
+    "landingPage": {
+        "pickupLine": "Let's celebrate without any tensions in mind!",
+        "details": "Next level event management solution that put together all the services at one place",
+        "createAccount": "Create Account"
+    },
+    "aboutPage": {
+        "pickupLine": "Get to know more about us!",
+        "details": "Our mission is to create a channel for the celebrants to find wide range of services",
+        "createAccount": "Leave your tensions with us!!"
+    }
+}
