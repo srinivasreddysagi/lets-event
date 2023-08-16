@@ -3,13 +3,14 @@ import { initialLoginFormState, loginValidations } from "./loginValidations";
 import { useForm } from "../../hooks/useForm";
 import { useRequest } from "../../hooks/useRequest";
 import SnackBar from "../common/SnackBar/SnackBar";
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import InputElement from "../common/InputElement/InputElement";
+import { Button } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
 import endpoint from "../../assets/content/Endpoints.json";
 import messages from "../../assets/content/AlertMessages.json";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import md5 from "blueimp-md5";
 import Link from "next/link";
+import Loader from "../common/Loader/Loader";
 
 export const LoginForm: FC = () => {
     const { formState, handleChange, validate, setError, clearForm } = useForm(
@@ -84,8 +85,6 @@ export const LoginForm: FC = () => {
         }
     };
 
-    if (isLoading) return <>{"Loading..."}</>;
-
     if (isError.status) return <>{isError.message}</>;
 
     return (
@@ -99,7 +98,7 @@ export const LoginForm: FC = () => {
 
             <form className="login-form" onSubmit={submitHandler}>
                 <div className="input email-field">
-                    <TextField
+                    <InputElement
                         className="inputField"
                         type={formFields.textFieldTypes.email}
                         name={formFields.textFieldTypes.email}
@@ -111,36 +110,17 @@ export const LoginForm: FC = () => {
                     />
                 </div>
                 <div className="input password-field">
-                    <TextField
+                    <InputElement
                         className="inputField"
                         name={formFields.textFieldTypes.password}
                         label={formFields.registrationForm.password.label}
-                        type={
-                            togglePasswordVisibility
-                                ? formFields.textFieldTypes.password
-                                : formFields.textFieldTypes.text
-                        }
+                        type={formFields.textFieldTypes.password}
                         error={!!formState[1].error}
                         helperText={formState[1].error}
                         value={formState[1].value}
                         onChange={handleChange}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onMouseUp={showHidePassword}
-                                        onMouseDown={showHidePassword}
-                                    >
-                                        {togglePasswordVisibility ? (
-                                            <AiFillEye />
-                                        ) : (
-                                            <AiFillEyeInvisible />
-                                        )}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
+                        hide={togglePasswordVisibility}
+                        showHidePassword={showHidePassword}
                     />
                 </div>
                 <div className="submit-btn">
@@ -162,6 +142,7 @@ export const LoginForm: FC = () => {
                 variant={snack.variant}
                 message={snack.message}
             />
+            {isLoading && <Loader isLoading={true} />}
         </>
     );
 };

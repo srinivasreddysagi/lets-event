@@ -1,15 +1,16 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { useForm } from "../../hooks/useForm";
-import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import InputElement from "../common/InputElement/InputElement";
+import { Button } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
 import endpoint from "../../assets/content/Endpoints.json";
 import messages from "../../assets/content/AlertMessages.json";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { initialFormState, validations } from "./registerFormData";
 import md5 from "blueimp-md5";
 import { useRequest } from "../../hooks/useRequest";
 import SnackBar from "../common/SnackBar/SnackBar";
+import Loader from "../common/Loader/Loader";
 
 export const RegistrationForm: FC = () => {
     const { formState, handleChange, validate, setError, clearForm } = useForm(
@@ -76,8 +77,6 @@ export const RegistrationForm: FC = () => {
         }
     };
 
-    if (isLoading) return <>{"Loading..."}</>;
-
     if (isError.status) return <>{isError.message}</>;
 
     return (
@@ -94,7 +93,7 @@ export const RegistrationForm: FC = () => {
                         formFields.registrationForm.firstName.id,
                         formFields.registrationForm.lastName.id,
                     ].map((each, idx) => (
-                        <TextField
+                        <InputElement
                             className="inputField"
                             key={each}
                             type={formFields.textFieldTypes.text}
@@ -113,7 +112,7 @@ export const RegistrationForm: FC = () => {
                         formFields.registrationForm.email.id,
                         formFields.registrationForm.mobile.id,
                     ].map((each, idx) => (
-                        <TextField
+                        <InputElement
                             key={each}
                             type={formFields.textFieldTypes[each]}
                             name={each}
@@ -134,48 +133,21 @@ export const RegistrationForm: FC = () => {
                         formFields.registrationForm.password.id,
                         formFields.registrationForm.confirmPassword.id,
                     ].map((each, idx) => (
-                        <TextField
+                        <InputElement
                             key={each}
                             name={each}
+                            type={formFields.registrationForm.password.id}
                             label={formFields.registrationForm[each].label}
-                            type={
-                                togglePasswordVisibility[each]
-                                    ? formFields.textFieldTypes.password
-                                    : formFields.textFieldTypes.text
+                            hide={togglePasswordVisibility[each]}
+                            showHidePassword={() =>
+                                showHidePassword(
+                                    formFields.registrationForm[each].id
+                                )
                             }
                             error={!!formState[idx + 4].error}
                             helperText={formState[idx + 4].error}
                             value={formState[idx + 4].value}
                             onChange={handleChange}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onMouseUp={() =>
-                                                showHidePassword(
-                                                    formFields.registrationForm[
-                                                        each
-                                                    ].id
-                                                )
-                                            }
-                                            onMouseDown={() =>
-                                                showHidePassword(
-                                                    formFields.registrationForm[
-                                                        each
-                                                    ].id
-                                                )
-                                            }
-                                        >
-                                            {togglePasswordVisibility[each] ? (
-                                                <AiFillEye />
-                                            ) : (
-                                                <AiFillEyeInvisible />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
                         />
                     ))}
                 </div>
@@ -191,6 +163,7 @@ export const RegistrationForm: FC = () => {
                 variant={snack.variant}
                 message={snack.message}
             />
+            {isLoading && <Loader isLoading={true} />}
         </>
     );
 };
