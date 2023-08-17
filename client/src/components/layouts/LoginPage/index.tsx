@@ -3,6 +3,7 @@ import NavBar from "../../NavBar";
 import LoginForm from "../../LoginForm";
 
 export const LoginPage: FC = () => {
+
     return (
         <>
             <NavBar />

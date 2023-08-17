@@ -11,6 +11,10 @@ router.post("/", async (req, res) => {
             if (loginUser[0].password === req.body.password) {
                 res.json({
                     message: messages.login.done,
+                    type: messages.alertVariants.success,
+                    userData: {
+                        email: loginUser[0].email,
+                    },
                 });
             } else {
                 res.json({

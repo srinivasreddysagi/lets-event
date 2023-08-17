@@ -8,9 +8,20 @@ import { Button } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
 import endpoint from "../../assets/content/Endpoints.json";
 import messages from "../../assets/content/AlertMessages.json";
+import appData from "../../assets/content/AppDetails.json";
 import md5 from "blueimp-md5";
 import Link from "next/link";
 import Loader from "../common/Loader/Loader";
+import { useRouter } from "next/navigation";
+
+interface Response {
+    status: number;
+    data?: {
+        message: string;
+        type: string;
+        userData: {};
+    };
+}
 
 export const LoginForm: FC = () => {
     const { formState, handleChange, validate, setError, clearForm } = useForm(
@@ -19,6 +30,8 @@ export const LoginForm: FC = () => {
     );
 
     const { isLoading, isError, postData } = useRequest();
+
+    const router = useRouter();
 
     const [snack, setSnack] = useState({
         snack: false,
@@ -32,6 +45,11 @@ export const LoginForm: FC = () => {
     const showHidePassword = () =>
         setTogglePasswordVisibility(!togglePasswordVisibility);
 
+    const authenticateUser = (userData) => {
+        sessionStorage.setItem("auth", JSON.stringify(userData));
+        router.push(appData.routes.data[0].path);
+    }
+
     const submitHandler = async (event) => {
         event.preventDefault();
         const isValid = validate();
@@ -40,7 +58,7 @@ export const LoginForm: FC = () => {
                 email: formState[0].value,
                 password: md5(formState[1].value),
             };
-            const response = await postData(
+            const response: Response = await postData(
                 endpoint.root +
                     endpoint.endpoints.rootVersion +
                     endpoint.endpoints.login,
@@ -68,6 +86,7 @@ export const LoginForm: FC = () => {
                         message: response.data.message,
                     });
                 } else {
+                    authenticateUser(response.data.userData);
                     clearForm();
                     setSnack({
                         snack: true,
