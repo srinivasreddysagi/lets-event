@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { useForm } from "../../hooks/useForm";
-import InputElement from "../common/InputElement/InputElement";
+import InputElement from "../common/InputElement";
 import { Button } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
 import endpoint from "../../assets/content/Endpoints.json";
@@ -9,24 +9,29 @@ import messages from "../../assets/content/AlertMessages.json";
 import { initialFormState, validations } from "./registerFormData";
 import md5 from "blueimp-md5";
 import { useRequest } from "../../hooks/useRequest";
-import SnackBar from "../common/SnackBar/SnackBar";
-import Loader from "../common/Loader/Loader";
+import { useAppDispatch } from "../../store/hooks";
+import { setNotification } from "../../store/slices/acrossAppSlice";
+
+interface Response {
+    status: number;
+    data?: {
+        type: string;
+        message: string;
+    }
+}
 
 export const RegistrationForm: FC = () => {
     const { formState, handleChange, validate, setError, clearForm } = useForm(
         initialFormState,
         validations
     );
-    const { isLoading, isError, postData } = useRequest();
+    const { isError, postData } = useRequest();
     const [togglePasswordVisibility, setTogglePasswordVisibility] = useState({
         password: true,
         confirmPassword: true,
     });
-    const [snack, setSnack] = useState({
-        snack: false,
-        message: "",
-        variant: "success",
-    });
+
+    const dispatch = useAppDispatch();
 
     const showHidePassword = (fieldId) =>
         setTogglePasswordVisibility({
@@ -45,7 +50,7 @@ export const RegistrationForm: FC = () => {
                 mobile: formState[3].value,
                 password: md5(formState[4].value),
             };
-            const response = await postData(
+            const response: Response = await postData(
                 endpoint.root +
                     endpoint.endpoints.rootVersion +
                     endpoint.endpoints.register,
@@ -53,17 +58,21 @@ export const RegistrationForm: FC = () => {
             );
             if (response.status === 200) {
                 clearForm();
-                setSnack({
-                    snack: true,
-                    variant: response.data.type,
-                    message: response.data.message,
-                });
+                dispatch(
+                    setNotification({
+                        notification: true,
+                        variant: response.data.type,
+                        message: response.data.message,
+                    })
+                );
             } else {
-                setSnack({
-                    snack: true,
-                    variant: messages.alertVariants.error,
-                    message: messages.common.error,
-                });
+                dispatch(
+                    setNotification({
+                        notification: true,
+                        variant: messages.alertVariants.error,
+                        message: messages.common.error,
+                    })
+                );
             }
         } else if (
             formState[4].value &&
@@ -157,13 +166,6 @@ export const RegistrationForm: FC = () => {
                     </Button>
                 </div>
             </form>
-            <SnackBar
-                snack={snack.snack}
-                setSnack={setSnack}
-                variant={snack.variant}
-                message={snack.message}
-            />
-            {isLoading && <Loader isLoading={true} />}
         </>
     );
 };

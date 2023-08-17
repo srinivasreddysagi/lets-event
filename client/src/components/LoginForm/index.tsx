@@ -2,8 +2,9 @@ import React, { FC, useState } from "react";
 import { initialLoginFormState, loginValidations } from "./loginValidations";
 import { useForm } from "../../hooks/useForm";
 import { useRequest } from "../../hooks/useRequest";
-import SnackBar from "../common/SnackBar/SnackBar";
-import InputElement from "../common/InputElement/InputElement";
+import { useAppDispatch } from "../../store/hooks";
+import { setNotification } from "../../store/slices/acrossAppSlice";
+import InputElement from "../common/InputElement";
 import { Button } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
 import endpoint from "../../assets/content/Endpoints.json";
@@ -11,7 +12,6 @@ import messages from "../../assets/content/AlertMessages.json";
 import appData from "../../assets/content/AppDetails.json";
 import md5 from "blueimp-md5";
 import Link from "next/link";
-import Loader from "../common/Loader/Loader";
 import { useRouter } from "next/navigation";
 
 interface Response {
@@ -24,20 +24,15 @@ interface Response {
 }
 
 export const LoginForm: FC = () => {
+    const dispatch = useAppDispatch();
     const { formState, handleChange, validate, setError, clearForm } = useForm(
         initialLoginFormState,
         loginValidations
     );
 
-    const { isLoading, isError, postData } = useRequest();
+    const { isError, postData } = useRequest();
 
     const router = useRouter();
-
-    const [snack, setSnack] = useState({
-        snack: false,
-        message: "",
-        variant: "success",
-    });
 
     const [togglePasswordVisibility, setTogglePasswordVisibility] =
         useState(true);
@@ -70,36 +65,44 @@ export const LoginForm: FC = () => {
                         formFields.textFieldTypes.email,
                         formFields.loginForm.errors.email
                     );
-                    setSnack({
-                        snack: true,
-                        variant: response.data.type,
-                        message: response.data.message,
-                    });
+                    dispatch(
+                        setNotification({
+                            notification: true,
+                            variant: response.data.type,
+                            message: response.data.message,
+                        })
+                    );
                 } else if (response.data.message === messages.login.wrongPcode) {
                     setError(
                         formFields.textFieldTypes.password,
                         formFields.loginForm.errors.password
                     );
-                    setSnack({
-                        snack: true,
-                        variant: response.data.type,
-                        message: response.data.message,
-                    });
+                    dispatch(
+                        setNotification({
+                            notification: true,
+                            variant: response.data.type,
+                            message: response.data.message,
+                        })
+                    );
                 } else {
-                    authenticateUser(response.data.userData);
+                    dispatch(
+                        setNotification({
+                            notification: true,
+                            variant: response.data.type,
+                            message: response.data.message,
+                        })
+                    );
                     clearForm();
-                    setSnack({
-                        snack: true,
-                        variant: response.data.type,
-                        message: response.data.message,
-                    });
+                    authenticateUser(response.data.userData);
                 }
             } else {
-                setSnack({
-                    snack: true,
-                    variant: messages.alertVariants.error,
-                    message: messages.common.error,
-                });
+                dispatch(
+                    setNotification({
+                        notification: true,
+                        variant: messages.alertVariants.error,
+                        message: messages.common.error,
+                    })
+                );
             }
         }
     };
@@ -155,13 +158,6 @@ export const LoginForm: FC = () => {
                     <Link href="/register">{"Reset Password"}</Link>{" "}
                 </p>
             </div>
-            <SnackBar
-                snack={snack.snack}
-                setSnack={setSnack}
-                variant={snack.variant}
-                message={snack.message}
-            />
-            {isLoading && <Loader isLoading={true} />}
         </>
     );
 };

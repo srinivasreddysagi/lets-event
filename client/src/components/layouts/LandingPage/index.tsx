@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
-import Jambotron from "../../common/Jambotron/Jambotron";
+import Jambotron from "../../common/Jambotron";
 import NavBar from "../../NavBar";
 import content from "../../../assets/content/SiteContent.json";
 import appData from "../../../assets/content/AppDetails.json";
-import LoggedinView from "../../LoginView/LoginView";
+import LoggedinView from "../../LoginView";
 
 export const LandingPage: FC = () => {
     const [auth, setAuth] = useState({ isLoggedIn: false, email: "" });

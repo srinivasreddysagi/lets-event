@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import NavBar from "../../NavBar";
-import Jambotron from "../../common/Jambotron/Jambotron";
+import Jambotron from "../../common/Jambotron";
 import content from "../../../assets/content/SiteContent.json";
 import appData from "../../../assets/content/AppDetails.json";
 

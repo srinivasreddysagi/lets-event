@@ -2,6 +2,8 @@ import React from "react";
 // import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { useAppDispatch } from "../../../store/hooks";
+import { setNotification } from "../../../store/slices/acrossAppSlice";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -10,7 +12,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export const SnackBar = ({ snack, setSnack, message, variant }) => {
+export const SnackBar = ({ snack, message, variant }) => {
+    const dispatch = useAppDispatch();
+
     const handleClose = (
         event?: React.SyntheticEvent | Event,
         reason?: string
@@ -18,8 +22,13 @@ export const SnackBar = ({ snack, setSnack, message, variant }) => {
         if (reason === "clickaway") {
             return;
         }
-
-        setSnack({ snack: false });
+        dispatch(
+            setNotification({
+                notification: false,
+                message: "",
+                variant: "",
+            })
+        );
     };
 
     return (

@@ -1,26 +1,28 @@
 import { useState } from "react";
 import { postRequest } from "../services/ApiCalls";
+import { useAppDispatch } from "../store/hooks";
+import { setIsLoading } from "../store/slices/acrossAppSlice";
 
 export const useRequest = () => {
-    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useAppDispatch();
     const [isError, setIsError] = useState({status: false, message: "Something went wrong :("});
 
     const postData = async (url, payload) => {
-        setIsLoading(true);
+        dispatch(setIsLoading(true));
         try {
             const response = await postRequest(url, payload);
             return response;
         } catch (error) {
             setIsError(error);
-            setIsLoading(false);
+            dispatch(setIsLoading(false));
             return { status: 500 };
         } finally {
-            setIsLoading(false);
+            dispatch(setIsLoading(false));
         }
     };
 
     return {
-        isLoading,
+        // isLoading,
         isError,
         postData,
     };
