@@ -3,7 +3,10 @@ import { initialLoginFormState, loginValidations } from "./loginValidations";
 import { useForm } from "../../hooks/useForm";
 import { useRequest } from "../../hooks/useRequest";
 import { useAppDispatch } from "../../store/hooks";
-import { setNotification } from "../../store/slices/acrossAppSlice";
+import {
+    setNotification,
+    setUserData,
+} from "../../store/slices/acrossAppSlice";
 import InputElement from "../common/InputElement";
 import { Button } from "@mui/material";
 import formFields from "../../assets/content/FormFields.json";
@@ -13,15 +16,7 @@ import appData from "../../assets/content/AppDetails.json";
 import md5 from "blueimp-md5";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-interface Response {
-    status: number;
-    data?: {
-        message: string;
-        type: string;
-        userData: {};
-    };
-}
+import { Response } from "./interfaces";
 
 export const LoginForm: FC = () => {
     const dispatch = useAppDispatch();
@@ -42,6 +37,7 @@ export const LoginForm: FC = () => {
 
     const authenticateUser = (userData) => {
         sessionStorage.setItem("auth", JSON.stringify(userData));
+        dispatch(setUserData(userData));
         router.push(appData.routes.data[0].path);
     }
 

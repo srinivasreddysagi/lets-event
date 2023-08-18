@@ -13,6 +13,7 @@ router.post("/", async (req, res) => {
                     message: messages.login.done,
                     type: messages.alertVariants.success,
                     userData: {
+                        signed: true,
                         email: loginUser[0].email,
                     },
                 });
