@@ -1,12 +1,27 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import AppDetails from "../../assets/content/AppDetails.json";
 import { usePathname } from "next/navigation";
+import { Button } from "@mui/material";
+import { useAppDispatch } from "../../store/hooks";
+import { setUserData } from "../../store/slices/acrossAppSlice";
 
-export const NavBar: FC = () => {
+interface Props {
+    auth: boolean;
+    navItems: any;
+}
+
+export const NavBar: FC<Props> = ({ auth, navItems }) => {
     const pathName = usePathname();
+    const dispatch = useAppDispatch();
+
+    const logOut = () => {
+        const payload = { signed: false, email: "" };
+        dispatch(setUserData(payload));
+        sessionStorage.setItem("auth", JSON.stringify(payload));
+    };
 
     return (
         <>
@@ -23,11 +38,17 @@ export const NavBar: FC = () => {
                         {AppDetails.applicationName}
                     </Navbar.Brand>
                     <Nav className="justify-content-end" activeKey={pathName}>
-                        {AppDetails.routes.data.map(({ key, path, name }) => (
-                            <Nav.Item key={key}>
-                                <Nav.Link href={path}>{name}</Nav.Link>
-                            </Nav.Item>
-                        ))}
+                        {navItems.length > 0 &&
+                            navItems.map(({ key, path, name }) => (
+                                <Nav.Item key={key}>
+                                    <Nav.Link href={path}>{name}</Nav.Link>
+                                </Nav.Item>
+                            ))}
+                        {auth && (
+                            <Button className="logout-btn" onClick={logOut}>
+                                {"Logout"}
+                            </Button>
+                        )}
                     </Nav>
                 </Container>
             </Navbar>

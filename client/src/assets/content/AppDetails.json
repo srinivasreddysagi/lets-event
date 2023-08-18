@@ -5,22 +5,26 @@
             {
                 "key": "home",
                 "path": "/",
-                "name": "Home"
+                "name": "Home",
+                "whenSigned": true
             },
             {
                 "key": "login",
                 "path": "/login",
-                "name": "Login"
+                "name": "Login",
+                "whenSigned": false
             },
             {
                 "key": "register",
                 "path": "/register",
-                "name": "Register"
+                "name": "Register",
+                "whenSigned": false
             },
             {
                 "key": "about",
                 "path": "/about",
-                "name": "About"
+                "name": "About",
+                "whenSigned": true
             }
         ]
     }
