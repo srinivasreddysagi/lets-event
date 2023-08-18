@@ -1,19 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { AcrossAppSlice, Notification, UserData } from "../interfaces";
 // import type { RootState } from "../store";
-
-// Define a type for the slice state
-interface AcrossAppSlice {
-    isLoading: boolean;
-    notification: {
-        notification: boolean;
-        message: string;
-        variant: string;
-    };
-}
 
 // Define the initial state using that type
 const initialState: AcrossAppSlice = {
+    userData: {
+        signed: false,
+        email: ""
+    },
     isLoading: false,
     notification: {
         notification: false,
@@ -22,17 +17,13 @@ const initialState: AcrossAppSlice = {
     },
 };
 
-interface Notification {
-    notification: boolean;
-    message: string;
-    variant: string;
-}
-
 export const acrossAppSlice = createSlice({
     name: "acrossApp",
-    // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
+        setUserData: (state, action: PayloadAction<UserData>) => {
+            state.userData = action.payload;
+        },
         setIsLoading: (state, action: PayloadAction<boolean>) => {
             state.isLoading = action.payload;
         },
@@ -42,9 +33,6 @@ export const acrossAppSlice = createSlice({
     },
 });
 
-export const { setIsLoading, setNotification } = acrossAppSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-// export const selectCount = (state: RootState) => state.counter.value;
+export const { setUserData, setIsLoading, setNotification } = acrossAppSlice.actions;
 
 export default acrossAppSlice.reducer;
