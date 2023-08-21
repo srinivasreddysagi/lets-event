@@ -6,26 +6,57 @@
                 "key": "home",
                 "path": "/",
                 "name": "Home",
+                "showIn": ["landing"],
                 "whenSigned": true
             },
             {
                 "key": "login",
                 "path": "/login",
                 "name": "Login",
+                "showIn": ["landing"],
                 "whenSigned": false
             },
             {
                 "key": "register",
                 "path": "/register",
                 "name": "Register",
+                "showIn": ["landing"],
                 "whenSigned": false
             },
             {
                 "key": "about",
                 "path": "/about",
                 "name": "About",
+                "showIn": ["landing"],
                 "whenSigned": true
             }
         ]
+    },
+    "loginView": {
+        "routes": {
+            "data": [
+                {
+                    "key": "event-services",
+                    "path": "/event-services",
+                    "name": "Event Services",
+                    "showIn": ["login"],
+                    "show": false
+                },
+                {
+                    "key": "service-seeker",
+                    "path": "/seeker",
+                    "name": "Service Seeker",
+                    "showIn": ["login"],
+                    "show": true
+                },
+                {
+                    "key": "service-provider",
+                    "path": "/provider",
+                    "name": "Service Provider",
+                    "showIn": ["login"],
+                    "show": true
+                }
+            ]
+        }
     }
 }
