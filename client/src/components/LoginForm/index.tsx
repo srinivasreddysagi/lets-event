@@ -38,7 +38,7 @@ export const LoginForm: FC = () => {
     const authenticateUser = (userData) => {
         sessionStorage.setItem("auth", JSON.stringify(userData));
         dispatch(setUserData(userData));
-        router.push(appData.routes.data[0].path);
+        router.push(appData.loginView.routes.data[0].path);
     }
 
     const submitHandler = async (event) => {
