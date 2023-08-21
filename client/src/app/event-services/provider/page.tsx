@@ -2,11 +2,12 @@
 
 import React from "react";
 import Layout from "../../../components/common/Layout";
+import ServicesProvider from "../../../components/layouts/ServicesProvider";
 
 export const Dashboard = () => {
     return (
         <Layout>
-            <p>You're a services provider now</p>
+            <ServicesProvider />
         </Layout>
     );
 };

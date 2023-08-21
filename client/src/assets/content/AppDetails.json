@@ -5,30 +5,22 @@
             {
                 "key": "home",
                 "path": "/",
-                "name": "Home",
-                "showIn": ["landing"],
-                "whenSigned": true
+                "name": "Home"
             },
             {
                 "key": "login",
                 "path": "/login",
-                "name": "Login",
-                "showIn": ["landing"],
-                "whenSigned": false
+                "name": "Login"
             },
             {
                 "key": "register",
                 "path": "/register",
-                "name": "Register",
-                "showIn": ["landing"],
-                "whenSigned": false
+                "name": "Register"
             },
             {
                 "key": "about",
                 "path": "/about",
-                "name": "About",
-                "showIn": ["landing"],
-                "whenSigned": true
+                "name": "About"
             }
         ]
     },
@@ -38,23 +30,17 @@
                 {
                     "key": "event-services",
                     "path": "/event-services",
-                    "name": "Event Services",
-                    "showIn": ["login"],
-                    "show": false
+                    "name": "Event Services"
                 },
                 {
                     "key": "service-seeker",
-                    "path": "/seeker",
-                    "name": "Service Seeker",
-                    "showIn": ["login"],
-                    "show": true
+                    "path": "/event-services/seeker",
+                    "name": "Service Seeker"
                 },
                 {
                     "key": "service-provider",
-                    "path": "/provider",
-                    "name": "Service Provider",
-                    "showIn": ["login"],
-                    "show": true
+                    "path": "/event-services/provider",
+                    "name": "Service Provider"
                 }
             ]
         }
