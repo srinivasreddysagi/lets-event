@@ -1,9 +1,10 @@
 import React, { FC } from "react";
+import Link from "next/link";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import AppDetails from "../../assets/content/AppDetails.json";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import { useAppDispatch } from "../../store/hooks";
 import { setUserData } from "../../store/slices/acrossAppSlice";
@@ -16,11 +17,13 @@ interface Props {
 export const NavBar: FC<Props> = ({ auth, navItems }) => {
     const pathName = usePathname();
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const logOut = () => {
         const payload = { signed: false, email: "" };
         dispatch(setUserData(payload));
         sessionStorage.setItem("auth", JSON.stringify(payload));
+        router.push(AppDetails.routes.data[1].path);
     };
 
     return (
@@ -41,7 +44,14 @@ export const NavBar: FC<Props> = ({ auth, navItems }) => {
                         {navItems.length > 0 &&
                             navItems.map(({ key, path, name }) => (
                                 <Nav.Item key={key}>
-                                    <Nav.Link href={path}>{name}</Nav.Link>
+                                    <Link
+                                        href={path}
+                                        className={`nav-link ${
+                                            path === pathName ? "active" : ""
+                                        }`}
+                                    >
+                                        {name}
+                                    </Link>
                                 </Nav.Item>
                             ))}
                         {auth && (
