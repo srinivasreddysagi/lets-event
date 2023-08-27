@@ -1,5 +1,13 @@
 import React from "react";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
+import {
+    IconButton,
+    InputAdornment,
+    TextField,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+} from "@mui/material";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import formFields from "../../../assets/content/FormFields.json";
 
@@ -10,10 +18,20 @@ export const InputElement = (props) => {
         case "tel":
             return (
                 <>
-                    <TextField
-                        {...props }
-                    />
+                    <TextField {...props} />
                 </>
+            );
+
+        case "select":
+            return (
+                <FormControl fullWidth>
+                    <InputLabel id={props.id}>{props.label}</InputLabel>
+                    <Select {...props} labelId={props.id}>
+                        {props.options.map(({ key, value }) => (
+                            <MenuItem value={value}>{key}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             );
 
         case "password":
