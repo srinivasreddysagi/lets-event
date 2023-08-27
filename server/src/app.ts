@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import registerRoute from "./routes/api/v1.0.0/register";
 import loginRoute from './routes/api/v1.0.0/login';
+import addService from "./routes/api/v1.0.0/add-service";
+import allServices from "./routes/api/v1.0.0/services";
 
 const app = express();
 const port = 3001;
@@ -18,6 +20,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1.0.0/register", registerRoute);
 app.use("/api/v1.0.0/login", loginRoute);
+app.use("/api/v1.0.0/add-service", addService);
+app.use("/api/v1.0.0/services", allServices);
 
 // Connect to DB
 // process.env.DB_CONNECT
