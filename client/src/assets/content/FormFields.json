@@ -37,6 +37,33 @@
             "password": "Invalid password"
         }
     },
+    "serviceForm": {
+        "service": {
+            "id": "service",
+            "label": "Select a Service",
+            "errorText": "Please choose a service"
+        },
+        "name":{
+            "id": "name",
+            "label": "Name",
+            "errorText": "Name is required"
+        },
+        "city": {
+            "id": "city",
+            "label": "City",
+            "errorText": "City is required"
+        },
+        "price": {
+            "id": "price",
+            "label": "Price",
+            "errorText": "Price is required"
+        },
+        "contact": {
+            "id": "contact",
+            "label": "Contact",
+            "errorText": "Contact is required"
+        }
+    },
     "variants": {
         "outlined": "outlined"
     },
@@ -48,6 +75,7 @@
     },
     "buttons": {
         "register": "register",
-        "login": "login"
+        "login": "login",
+        "submit": "submit"
     }
 }

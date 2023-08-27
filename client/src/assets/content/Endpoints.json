@@ -3,6 +3,8 @@
     "endpoints": {
         "rootVersion": "api/v1.0.0/",
         "register": "register",
-        "login": "login"
+        "login": "login",
+        "addService": "add-service",
+        "allServices": "services"
     }
 }

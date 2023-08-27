@@ -16,5 +16,8 @@
         "done": "User authorized successfully",
         "notRegistered": "User is not registered",
         "wrongPcode": "Unauthorized - Invalid password"
+    },
+    "services": {
+        "done": "Service has been registered successfully"
     }
 }
