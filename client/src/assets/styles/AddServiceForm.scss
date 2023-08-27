@@ -1,0 +1,29 @@
+.service-provider-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .form-fill {
+        padding: 2rem;
+        height: auto;
+        width: auto;
+        max-width: 80vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        background-color: #fff;
+        color: $clr-dashed-tile-border;
+
+        .form-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+
+            .inputField {
+                width: 20rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+.add-item-tile {
+    height: 10rem;
+    width: 14rem;
+    border: 1px dashed $clr-dashed-tile-border;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    svg {
+        height: 2.5rem;
+        width: 2.5rem;
+        path {
+            stroke: #61677A;
+        }
+    }
+}

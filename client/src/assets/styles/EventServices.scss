@@ -1,0 +1,25 @@
+.event-services {
+    margin-top: 4rem;
+    .choose-prompt {
+        padding: 2rem;
+    }
+    .links-wrapper {
+        a {
+            height: 8rem;
+            width: 10rem;
+            background-color: #B4F8C8;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #274472;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .2s ease;
+            &:hover {
+                font-size: 1.5rem;
+                box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            }
+        }
+    }
+}
