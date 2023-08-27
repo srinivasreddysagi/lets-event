@@ -19,3 +19,16 @@ export interface UserData {
     signed: boolean;
     email: string;
 }
+
+export interface EventServicesSlice {
+    providerServices: ProviderServices[];
+}
+
+export interface ProviderServices {
+    id: number;
+    service: string;
+    name: string;
+    city: string;
+    price: string;
+    contact: string;
+}
