@@ -7,9 +7,9 @@ import axios from "axios";
 //     },
 // };
 
-export const getRequest = async (url) => {
-    const response = await axios.get(url);
-    return response.data;
+export const getRequest = async (url, payload = {}) => {
+    const response = await axios.get(url, payload);
+    return response;
 };
 
 export const postRequest = async (url, body) => {

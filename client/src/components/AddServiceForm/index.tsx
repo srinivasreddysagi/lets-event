@@ -19,12 +19,14 @@ export interface AddServiceFormProps {
     open: boolean;
     handleClose: any;
     userData: UserData;
+    refreshServicesData: any;
 }
 
 export const AddServiceForm: FC<AddServiceFormProps> = ({
     open,
     handleClose,
     userData,
+    refreshServicesData,
 }) => {
     const { formState, handleChange, validate, clearForm } = useForm(
         initialServiceFormState,
@@ -55,6 +57,7 @@ export const AddServiceForm: FC<AddServiceFormProps> = ({
                 response.status === 200 &&
                 response.data.message === messages.services.done
             ) {
+                refreshServicesData();
                 dispatch(
                     setNotification({
                         notification: true,
@@ -64,6 +67,14 @@ export const AddServiceForm: FC<AddServiceFormProps> = ({
                 );
                 clearForm();
                 handleClose();
+            } else {
+                dispatch(
+                    setNotification({
+                        notification: true,
+                        variant: messages.alertVariants.error,
+                        message: messages.services.fail,
+                    })
+                );
             }
         }
     };

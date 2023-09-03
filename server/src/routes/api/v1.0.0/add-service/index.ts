@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const addServiceData = new AddService({
+        email: req.body.email,
         service: req.body.service,
         name: req.body.name,
         city: req.body.city,
