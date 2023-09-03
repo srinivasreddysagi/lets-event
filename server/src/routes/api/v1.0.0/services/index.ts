@@ -3,15 +3,15 @@ import AddService from "../../../../models/AddService";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        let allServices: any = [];
-        if (req.body.email) {
-            allServices = AddService.find({ email: req.body?.email });
+        if (req?.body?.email) {
+            const allServices = await AddService.find({ email: req.body.email });
+            res.json(allServices);
         } else {
-            allServices = AddService.find();
+            const allServices = await AddService.find();
+            res.json(allServices);
         }
-        res.json(allServices);
     } catch (error) {
         res.json({ message: error });
     }

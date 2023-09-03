@@ -18,6 +18,7 @@
         "wrongPcode": "Unauthorized - Invalid password"
     },
     "services": {
-        "done": "Service has been registered successfully"
+        "done": "Service has been registered successfully",
+        "fail": "Failed to fulfill the request! Please try again"
     }
 }
