@@ -63,12 +63,12 @@ export const ServicesProvider: FC = () => {
                         <Col
                             lg={4}
                             className="p-4 services-tile"
-                            key={service.id}
+                            key={service._id}
                         >
                             <ServiceTile {...service} />
                         </Col>
                     ))}
-                    <Col lg={4} className="p-4 services-tile">
+                    <Col key={"add-button"} lg={4} className="p-4 services-tile">
                         <AddItemTile clickHandler={() => setOpen(true)} />
                     </Col>
                 </Row>

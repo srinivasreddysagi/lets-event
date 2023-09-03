@@ -1,8 +1,7 @@
 import React, { FC } from "react";
-import { ProviderServices } from "../../store/interfaces";
-import { GrAdd } from "react-icons/gr";
+import { Services } from "../../store/interfaces";
 
-export const ServiceTile: FC<Omit<ProviderServices, "id" | "contact">> = ({
+export const ServiceTile: FC<Omit<Services, "_id" | "contact">> = ({
     name,
     service,
     city,
