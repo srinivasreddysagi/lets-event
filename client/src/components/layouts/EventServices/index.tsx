@@ -1,7 +1,19 @@
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import { isLoggedIn } from "../../../utils/utilityFunctions";
+import appData from "../../../assets/content/AppDetails.json"
 
 export const EventServices = () => {
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if(!isLoggedIn()) {
+            router.push(appData.routes.data[1].path);
+        }
+    })
+    
     return (
         <main className="event-services">
             <div className="container d-flex flex-column align-items-center">
