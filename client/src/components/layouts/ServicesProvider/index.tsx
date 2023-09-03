@@ -18,15 +18,13 @@ export const ServicesProvider: FC = () => {
 
     const router = useRouter();
 
-    const fetchServicesOfProvider = async (email = "") => {
-        const payload = {
-            email
-        }
+    const fetchServicesOfProvider = async (email) => {
         const allServices = await getRequest(
-            endpoints.root +
+            `${
+                endpoints.root +
                 endpoints.endpoints.rootVersion +
-                endpoints.endpoints.allServices,
-            payload
+                endpoints.endpoints.allServices
+            }/${email}`
         );
         if(allServices.status === 200) {
             dispatch(setProviderServices(allServices.data));
