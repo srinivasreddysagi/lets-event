@@ -21,14 +21,19 @@ export interface UserData {
 }
 
 export interface EventServicesSlice {
-    providerServices: ProviderServices[];
+    providerServices: Services[];
+    seekerServices: Services[];
 }
 
-export interface ProviderServices {
-    id: number;
+export interface Services {
+    _id: string;
     service: string;
     name: string;
     city: string;
     price: string;
     contact: string;
+}
+
+export interface ShoppingCartSlice {
+    cartItems: Services[];
 }

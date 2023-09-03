@@ -1,27 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import {
-    EventServicesSlice,
-    ProviderServices,
-} from "../interfaces";
+import { EventServicesSlice, Services } from "../interfaces";
 
 const initialState: EventServicesSlice = {
-    providerServices: []
+    providerServices: [],
+    seekerServices: [],
 };
 
-export const acrossAppSlice = createSlice({
+export const eventServices = createSlice({
     name: "eventServices",
     initialState,
     reducers: {
-        setProviderServices: (
-            state,
-            action: PayloadAction<ProviderServices[]>
-        ) => {
+        setProviderServices: (state, action: PayloadAction<Services[]>) => {
             state.providerServices = action.payload;
+        },
+        setSeekerServices: (state, action: PayloadAction<Services[]>) => {
+            state.seekerServices = action.payload;
         },
     },
 });
 
-export const { setProviderServices } = acrossAppSlice.actions;
+export const { setProviderServices, setSeekerServices } = eventServices.actions;
 
-export default acrossAppSlice.reducer;
+export default eventServices.reducer;
